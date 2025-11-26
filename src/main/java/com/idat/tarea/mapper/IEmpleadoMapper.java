@@ -12,6 +12,7 @@ import com.idat.tarea.entity.EmpleadoEntity;
 public interface IEmpleadoMapper {
 	
 	// convertir dto a entity
+	@Mapping(target = "area.idArea", source = "areaId")
 	EmpleadoEntity toEntity(EmpleadoDTO dto);
 	List<EmpleadoEntity> toEntityList(List<EmpleadoDTO> lista);
 	
