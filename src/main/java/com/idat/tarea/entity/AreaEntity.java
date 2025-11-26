@@ -20,7 +20,7 @@ public class AreaEntity {
 	@Column(name = "id_area")
 	private Long idArea;
 	
-	@Column(name = "nombre", length= 100, nullable= false, unique = true)
+	@Column(name = "nombre", length= 100, nullable= false)
 	private String nombre;
 	
 	@Column(name = "descripcion", length= 255, nullable= true)
