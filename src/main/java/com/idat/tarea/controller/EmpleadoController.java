@@ -1,5 +1,4 @@
 package com.idat.tarea.controller;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -117,25 +116,21 @@ public class EmpleadoController {
 	    
 	    List<AreaEntity> areas = areaRepo.findAll();
 	    List<EmpleadoEntity> empleados = empleadoService.findAll();
-	    List<Map<String, Object>> resumen = new ArrayList<>();
-	    
+	    List<Map<String, Object>> resumen = new ArrayList<>(); 
 	    for (AreaEntity area : areas) {
 	        long total = empleados.stream()
 	            .filter(emp -> emp.getArea() != null && emp.getArea().getIdArea().equals(area.getIdArea()))
-	            .count();
-	            
+	            .count();          
 	        long activos = empleados.stream()
 	            .filter(emp -> emp.getArea() != null && 
 	                          emp.getArea().getIdArea().equals(area.getIdArea()) && 
 	                          "A".equals(emp.getEstado()))
-	            .count();
-	            
+	            .count();	            
 	        long inactivos = empleados.stream()
 	            .filter(emp -> emp.getArea() != null && 
 	                          emp.getArea().getIdArea().equals(area.getIdArea()) && 
 	                          "I".equals(emp.getEstado()))
-	            .count();
-	        
+	            .count();	        
 	        Map<String, Object> areaResumen = new HashMap<>();
 	        areaResumen.put("nombreArea", area.getNombre());
 	        areaResumen.put("total", total);
