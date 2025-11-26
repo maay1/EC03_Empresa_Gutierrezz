@@ -13,8 +13,6 @@ RUN chmod +x mvnw
 # Construir el JAR
 RUN ./mvnw clean package -DskipTests
 
-# Copiar el JAR
-COPY --from=build /app/target/*.jar app.jar
-
+# Ejecutar la aplicacion
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "target/*.jar"]
