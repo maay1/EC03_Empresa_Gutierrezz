@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Empleado</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">Sistema Gestión</a>
+            <div class="navbar-nav">
+                <a class="nav-link" th:href="@{/}">Inicio</a>
+                <a class="nav-link" th:href="@{/areas/listar}">Áreas</a>
+                <a class="nav-link" th:href="@{/empleados/listar}">Empleados</a>
+                <a class="nav-link active" th:href="@{/empleados/resumen}">Resumen</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0">
+                            <i class="bi bi-person-plus-fill"></i> Agregar Nuevo Empleado
+                        </h4>
+                    </div>
+                    <div class="card-body">
+
+                        <!-- BLOQUE PARA MOSTRAR MENSAJES DE ERROR -->
+                        <div th:if="${mensaje}" class="alert alert-danger" th:text="${mensaje}"></div>
+
+                        <form th:action="@{/empleados/guardar}" method="post">
+
+                            <!-- Campo Nombre -->
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">
+                                    <i class="bi bi-person"></i> Nombre Completo
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="nombre"
+                                       name="nombre"
+                                       th:value="${empleado?.nombre}"
+                                       placeholder="Ingrese nombre completo">
+                            </div>
+
+                            <!-- Cargo y Documento -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="cargo" class="form-label">
+                                        <i class="bi bi-briefcase"></i> Cargo
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="cargo"
+                                           name="cargo"
+                                           th:value="${empleado?.cargo}"
+                                           placeholder="Ej: Desarrollador">
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="documento" class="form-label">
+                                        <i class="bi bi-card-text"></i> DNI
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="documento"
+                                           name="documento"
+                                           th:value="${empleado?.documento}"
+                                           placeholder="12345678">
+                                </div>
+                            </div>
+
+                            <!-- Área y Estado -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="areaId" class="form-label">
+                                        <i class="bi bi-building"></i> Área
+                                    </label>
+                                    <select class="form-select"
+                                            id="areaId"
+                                            name="areaId">
+                                        <option value="">-- Seleccione área --</option>
+                                        <option th:each="area : ${areas}"
+                                                th:value="${area.idArea}"
+                                                th:text="${area.nombre}"
+                                                th:selected="${empleado?.areaId == area.idArea}">
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="estado" class="form-label">
+                                        <i class="bi bi-toggle-on"></i> Estado
+                                    </label>
+                                    <select class="form-select"
+                                            id="estado"
+                                            name="estado">
+                                        <option value="">-- Seleccione estado --</option>
+                                        <option value="A" th:selected="${empleado?.estado == 'A'}">Activo</option>
+                                        <option value="I" th:selected="${empleado?.estado == 'I'}">Inactivo</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Botones -->
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-between mt-4">
+                                <a th:href="@{/empleados/listar}" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left-circle"></i> Cancelar
+                                </a>
+
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-save-fill"></i> Guardar
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Empleados por Área</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+    <!-- Menú simple -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">Sistema Gestión</a>
+            <div class="navbar-nav">
+                <a class="nav-link" th:href="@{/}">Inicio</a>
+                <a class="nav-link" th:href="@{/areas/listar}">Áreas</a>
+                <a class="nav-link" th:href="@{/empleados/listar}">Empleados</a>
+                <a class="nav-link active" th:href="@{/empleados/buscar-area}">Buscar por Área</a>
+                <a class="nav-link" th:href="@{/empleados/resumen}">Resumen</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-building"></i> Buscar Empleados por Área
+                </h4>
+            </div>
+            <div class="card-body">
+                <!-- Formulario de búsqueda -->
+                <form th:action="@{/empleados/buscar-area}" method="get" class="mb-4">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <select name="areaId" class="form-select">
+                                <option value="">-- Todas las áreas --</option>
+                                <option th:each="area : ${areas}" 
+                                        th:value="${area.idArea}"
+                                        th:text="${area.nombre}"
+                                        th:selected="${areaId == area.idArea}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Resultados -->
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Cargo</th>
+                                <th>Documento</th>
+                                <th>Área</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="emp : ${empleados}">
+                                <td th:text="${emp.idEmpleado}"></td>
+                                <td th:text="${emp.nombre}"></td>
+                                <td th:text="${emp.cargo}"></td>
+                                <td th:text="${emp.documento}"></td>
+                                <td>
+                                    <span th:each="area : ${areas}" 
+                                          th:if="${area.idArea == emp.areaId}"
+                                          th:text="${area.nombre}">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span th:if="${emp.estado == 'A'}" class="badge bg-success">Activo</span>
+                                    <span th:if="${emp.estado == 'I'}" class="badge bg-danger">Inactivo</span>
+                                </td>
+                            </tr>
+                            <tr th:if="${empleados == null or empleados.isEmpty()}">
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                    No hay empleados para mostrar
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <a th:href="@{/empleados/listar}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Volver al Listado
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

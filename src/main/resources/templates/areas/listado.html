@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Áreas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+	        <div class="container">
+	            <a class="navbar-brand" th:href="@{/}">Sistema Gestión</a>
+	            <div class="navbar-nav">
+	                <a class="nav-link" th:href="@{/}">Inicio</a>
+	                <a class="nav-link" th:href="@{/areas/listar}">Áreas</a>
+	                <a class="nav-link" th:href="@{/empleados/listar}">Empleados</a>
+	                <a class="nav-link active" th:href="@{/empleados/buscar-area}">Buscar por Área</a>
+	                <a class="nav-link" th:href="@{/empleados/resumen}">Resumen</a>
+	            </div>
+	        </div>
+	    </nav>
+    <div class="container mt-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">
+                    <i class="bi bi-building"></i> Listado de Áreas
+                </h4>
+                <a th:href="@{/areas/nuevo}" class="btn btn-success btn-sm">
+                    <i class="bi bi-plus-circle"></i> Nueva Área
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="area : ${areas}">
+                                <td th:text="${area.idArea}"></td>
+                                <td th:text="${area.nombre}"></td>
+                                <td th:text="${area.descripcion}"></td>
+                                <td>
+                                    <span th:if="${area.estado != null and (area.estado == 'A' or area.estado.trim().equalsIgnoreCase('A'))}" 
+                                          class="badge bg-success">
+                                        <i class="bi bi-check-circle-fill"></i> Activo
+                                    </span>
+                                    <span th:if="${area.estado != null and (area.estado == 'I' or area.estado.trim().equalsIgnoreCase('I'))}" 
+                                          class="badge bg-danger">
+                                        <i class="bi bi-x-circle-fill"></i> Inactivo
+                                    </span>
+                                </td>
+                                <td>
+                                    <a th:href="@{/areas/editar/{id}(id=${area.idArea})}"
+                                       class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </a>
+                                    <form th:action="@{/areas/eliminar/{id}(id=${area.idArea})}"
+                                          method="post"
+                                          style="display: inline;"
+                                          onsubmit="return confirm('¿Está seguro de eliminar esta área?')">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="bi bi-trash"></i> Eliminar
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${areas == null or areas.isEmpty()}">
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                    No hay áreas registradas
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
